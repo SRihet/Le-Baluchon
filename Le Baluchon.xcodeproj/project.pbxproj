@@ -18,6 +18,7 @@
 		CB915DFE27AA95BC0031AAD4 /* Le_BaluchonUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB915DFD27AA95BC0031AAD4 /* Le_BaluchonUITestsLaunchTests.swift */; };
 		CB915E0F27AD69340031AAD4 /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB915E0E27AD69340031AAD4 /* WeatherViewController.swift */; };
 		CB915E1127AD69420031AAD4 /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB915E1027AD69420031AAD4 /* CurrencyViewController.swift */; };
+		CB915E1427AD6EFF0031AAD4 /* City.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CB915E1227AD6EFF0031AAD4 /* City.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		CB915DFD27AA95BC0031AAD4 /* Le_BaluchonUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Le_BaluchonUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		CB915E0E27AD69340031AAD4 /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 		CB915E1027AD69420031AAD4 /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
+		CB915E1327AD6EFF0031AAD4 /* City.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = City.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 		CB915E0C27AA95D50031AAD4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CB915E1227AD6EFF0031AAD4 /* City.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -298,6 +301,7 @@
 			files = (
 				CB915DDF27AA95BB0031AAD4 /* TranslateViewController.swift in Sources */,
 				CB915E0F27AD69340031AAD4 /* WeatherViewController.swift in Sources */,
+				CB915E1427AD6EFF0031AAD4 /* City.xcdatamodeld in Sources */,
 				CB915DDB27AA95BB0031AAD4 /* AppDelegate.swift in Sources */,
 				CB915DDD27AA95BB0031AAD4 /* SceneDelegate.swift in Sources */,
 				CB915E1127AD69420031AAD4 /* CurrencyViewController.swift in Sources */,
@@ -664,6 +668,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CB915E1227AD6EFF0031AAD4 /* City.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CB915E1327AD6EFF0031AAD4 /* City.xcdatamodel */,
+			);
+			currentVersion = CB915E1327AD6EFF0031AAD4 /* City.xcdatamodel */;
+			path = City.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CB915DCF27AA95BB0031AAD4 /* Project object */;
 }
