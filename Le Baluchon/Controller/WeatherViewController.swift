@@ -63,10 +63,6 @@ class WeatherViewController: UIViewController {
      }
     }}}
     
-    // MARK: Action
-    @IBAction func didTapWeatherButton(_ sender: Any) {
-       getMyWeather()
-    }
     
     
     private func getMyWeather() {
@@ -115,9 +111,13 @@ class WeatherViewController: UIViewController {
         self.myTempLabel.text! = String(myTemp) + "°"
         self.myDetailLabel.text! = myWeather.weather[0].description
         self.myWeatherIcon.image = self.setImage(for: myWeather.weather[0])
+        self.myCityMinTempLabel.text! = "Min: " + String(myTempMin)
+        self.myCityMaxTempLabel.text! = "Min: " + String(myTempMax)
         self.researchTempLabel.text! = String(researchTemp) + "°"
         self.researchDetailLabel.text! = researchWeather.weather[0].description
         self.researchWeatherIcon.image = self.setImage(for: researchWeather.weather[0])
+        self.researchCityMinTempLabel.text! = "Min: " + String(researchTempMin)
+        self.researchCityMaxTempLabel.text! = "Min: " + String(researchTempMax)
     }
     
     private func createParameters(city:String) -> String {
@@ -139,19 +139,27 @@ class WeatherViewController: UIViewController {
         let main = weatherElement.main
 
         // Change image to match main description
-         if main.contains("Clear") {
+         if main.contains("Clear sky") {
             return #imageLiteral(resourceName: "Sun")
+        } else if main.contains("Few clouds") {
+            return #imageLiteral(resourceName: "Few clouds")
+        } else if main.contains("scattered clouds") {
+            return #imageLiteral(resourceName: "Clouds")
+        } else if main.contains("broken clouds") {
+            return #imageLiteral(resourceName: "Clouds")
+        } else if main.contains("shower rain") {
+            return #imageLiteral(resourceName: "Shower rain")
         } else if main.contains("Rain") {
             return #imageLiteral(resourceName: "Rain")
-        } else if main.contains("Thunderstorm") {
+        } else if main.contains("thunderstorm") {
             return #imageLiteral(resourceName: "Thunderstorm")
-        } else if main.contains("Snow") {
-            return #imageLiteral(resourceName: "Clouds")
-        } else if main.contains("Drizzle") {
+        } else if main.contains("snow") {
+            return #imageLiteral(resourceName: "Snow")
+        } else if main.contains("mist") {
             return #imageLiteral(resourceName: "Drizzle")
         }
 
         // For all the rest
-        return #imageLiteral(resourceName: "Weather-Item")
+        return #imageLiteral(resourceName: "Few clouds")
     }
 }

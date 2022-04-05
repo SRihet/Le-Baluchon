@@ -18,16 +18,19 @@ enum WebService {
 // MARK: - Fixer
 struct CurrencyAPI {
     static private let endpoint = "http://data.fixer.io/api/latest"
-    static private let accessKey = "?access_key=7b69386e28de35a6d89f696e02ab43eb"
+    static private let accessKey = "?access_key=\(currencyApiKey)"
+    static private let symbols = "&symbols=USD,JPY,CAD,AUD,CHF,DKK,CNY,IDR,GBP,BGN,HUF,ISK,NOK,HRK,RUB,SEK,UAH,CZK,EUR"
 
 
-    static var url: String { return CurrencyAPI.endpoint + CurrencyAPI.accessKey }
+    static var url: String {
+        return CurrencyAPI.endpoint + CurrencyAPI.accessKey  + CurrencyAPI.symbols
+    }
 }
 
 // MARK: - Google Translation
 struct TranslationAPI {
     static private let endpoint = "https://translation.googleapis.com/language/translate/v2"
-    static private let accessKey = "?key=AIzaSyDKs64sJB69928OzGkKuSy7Njsen7dTuqg"
+    static private let accessKey = "?key=\(translationApiKey)"
     static let source = "&source="
     static let target = "&target="
     static let text = "&format=text&q="
@@ -41,10 +44,10 @@ struct TranslationAPI {
 // MARK: - Open Weather Map
 struct WeatherAPI {
     static private let endpoint = "https://api.openweathermap.org/data/2.5/weather?"
-    static private let accessKey = "APPID=531b5e5af3cf2eb606b0b9f9bad625a4"
+    static private let accessKey = "APPID=\(weatherApiKey)"
     static let city = "&q="
     static private let units = "&units=metric"
-    static private let lang = "&lang=en"
+    static private let lang = "&lang=fr"
 
 
     static var url: String {

@@ -44,7 +44,7 @@ extension NetWorker {
      `input` default value is an empty string.
      */
     func query(API: WebService, input: String = "", callback: @escaping Callback) {
-//        if API != .weather { task?.cancel() }
+        if API != .currency { task?.cancel() }
 
         guard let request = getRequest(API: API, for: input) else {
             callback(false, nil)
@@ -66,13 +66,14 @@ extension NetWorker {
                 let decoder = JSONDecoder()
                 switch API {
                 case .currency:
-                    break
-//                    if ConvertService.parse(data, with: decoder) as? Int == -1 ||
-//                        ConvertService.parse(data, with: decoder) as? Int == -2 {
-//                        callback(false, nil)
-//                        return
-//                    }
-//                    self?.resource = ConvertService.parse(data, with: decoder)
+                    if CurrencyService.parse(data, with: decoder) as? Int == -1
+                        ||
+                        CurrencyService.parse(data, with: decoder) as? Int == -2
+                    {
+                        callback(false, nil)
+                        return
+                    }
+                    self?.resource = CurrencyService.parse(data, with: decoder)
 
                 case .translate:
                     if TranslateService.parse(data, with: decoder) as? Int == -1 {
@@ -112,8 +113,7 @@ extension NetWorker {
     private func getRequest(API: WebService, for input: String = "") -> URLRequest? {
         switch API {
         case .currency:
-            break
-//            request = ConvertService.createRequest()
+            request = CurrencyService.createRequest()
         case .translate:
             request = TranslateService.createRequest(for: input)
         case .weather:

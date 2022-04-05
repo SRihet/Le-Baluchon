@@ -12,8 +12,8 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
     
     @IBOutlet weak var userText: UITextView!
     @IBOutlet weak var translatedText: UITextView!
-    var desiredLanguage: String = "en"
-    var motherLanguage: String = "fr"
+    var desiredLanguageRow: Int = 1
+    var motherLanguageRow: Int = 0
     
     @IBOutlet weak var motherLanguageButton: UIButton!
     
@@ -24,46 +24,43 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
     var selectedRowdesiredLang = 1
     
     var textViewTimer: Timer?
-    var dictionaryLanguages =
+
+    var sourceLanguages: [(langs:String,sources:String)] =
     [
-        "Anglais" : "en",
-        "Français" : "fr",
-        "Italien" : "it",
-        "Espagnol" : "es",
-        "Néerlandais" : "nl",
-        "Indonésien" : "id",
-        "Bulgare" : "bg",
-        "Croate" : "hr",
-        "Danois" : "da",
-        "Grec" : "el",
-        "Hongrois" : "hu",
-        "Islandais" : "is",
-        "Norvégien" : "no",
-        "Polonais" : "pl",
-        "Portugais" : "pt",
-        "Russe" : "ru",
-        "Suèdois" : "sv",
-        "Ukrainien" : "uk",
-        "Tchèque" : "cs",
-        "Ouïgour" : "ug",
-        "Gallois" : "cy",
-        "Allemand" : "de"
+        ("Anglais","en"),
+        ("Français","fr"),
+        ("Italien","it"),
+        ("Espagnol","es"),
+        ("Néerlandais","nl"),
+        ("Indonésien","id"),
+        ("Bulgare","bg"),
+        ("Croate","hr"),
+        ("Danois","da"),
+        ("Grec","el"),
+        ("Hongrois","hu"),
+        ("Islandais","is"),
+        ("Norvégien","no"),
+        ("Polonais","pl"),
+        ("Portugais","pt"),
+        ("Russe","ru"),
+        ("Suèdois","sv"),
+        ("Ukrainien","uk"),
+        ("Tchèque","cs"),
+        ("Ouïgour","ug"),
+        ("Gallois","cy"),
+        ("Allemand","de")
     ]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         userText.delegate = self
-        self.desiredLanguageButton.setTitle(dictionaryLanguages.someKey(forValue: desiredLanguage), for: .normal)
-        self.motherLanguageButton.setTitle(dictionaryLanguages.someKey(forValue: motherLanguage), for: .normal)
+        self.desiredLanguageButton.setTitle(sourceLanguages[selectedRowdesiredLang].langs, for: .normal)
+        self.motherLanguageButton.setTitle(sourceLanguages[selectedRowMotherLang].langs, for: .normal)
         
         userText.text = "Placeholder text goes right here..."
         userText.textColor = UIColor.lightGray
-        
-        
-        
-        
-        // Do any additional setup after loading the view.
+
     }
     
     
@@ -102,10 +99,8 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
             
             alert.addAction(UIAlertAction(title: "Select", style: .default, handler: { (UIAlertAction) in
                 self.selectedRowMotherLang = pickerView.selectedRow(inComponent: 0)
-                let selected = Array(self.dictionaryLanguages)[self.selectedRowMotherLang]
-                self.motherLanguage = selected.value
-                let name = selected.key
-                self.motherLanguageButton.setTitle(name, for: .normal)
+                let selected = Array(self.sourceLanguages)[self.selectedRowMotherLang].langs
+                self.motherLanguageButton.setTitle(selected, for: .normal)
                 self.typingStopped()
             }))
         }
@@ -120,10 +115,8 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
             
             alert.addAction(UIAlertAction(title: "Select", style: .default, handler: { (UIAlertAction) in
                 self.selectedRowdesiredLang = pickerView.selectedRow(inComponent: 0)
-                let selected = Array(self.dictionaryLanguages)[self.selectedRowdesiredLang]
-                self.desiredLanguage = selected.value
-                let name = selected.key
-                self.desiredLanguageButton.setTitle(name, for: .normal)
+                let selected = Array(self.sourceLanguages)[self.selectedRowdesiredLang].langs
+                self.desiredLanguageButton.setTitle(selected, for: .normal)
                 self.typingStopped()
             }))
         }
@@ -134,15 +127,15 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
     }
     
     @IBAction func reverseLanguage(_ sender: Any) {
-        let desiredLang = motherLanguage
-        let motherLang = desiredLanguage
+        let desiredLang = selectedRowMotherLang
+        let motherLang = selectedRowdesiredLang
         
         
-        self.desiredLanguageButton.setTitle(dictionaryLanguages.someKey(forValue: desiredLang), for: .normal)
-        self.motherLanguageButton.setTitle(dictionaryLanguages.someKey(forValue: motherLang), for: .normal)
+        self.desiredLanguageButton.setTitle(sourceLanguages[desiredLang].langs, for: .normal)
+        self.motherLanguageButton.setTitle(sourceLanguages[motherLang].langs, for: .normal)
         
-        self.desiredLanguage = desiredLang
-        self.motherLanguage = motherLang
+        self.selectedRowdesiredLang = desiredLang
+        self.selectedRowMotherLang = motherLang
         
         self.userText.text = translatedText.text
         self.translatedText.text = ""
@@ -182,8 +175,8 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
     
     private func createParameters() -> String {
         let text: String = userText.text
-        let source = motherLanguage
-        let target = desiredLanguage
+        let source = sourceLanguages[selectedRowMotherLang].sources
+        let target = sourceLanguages[selectedRowdesiredLang].sources
         
         let completeParameters = TranslationAPI.source + source + TranslationAPI.target + target + TranslationAPI.text + text
         
@@ -199,14 +192,6 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
         present(alertVC, animated: true, completion: nil)
     }
     
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView
-    {
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 30))
-        label.text = Array(dictionaryLanguages)[row].key
-        label.sizeToFit()
-        return label
-    }
-    
     func numberOfComponents(in pickerView: UIPickerView) -> Int
     {
         return 1
@@ -214,17 +199,10 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
     {
-        dictionaryLanguages.count
+        sourceLanguages.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat
-    {
-        return 40
-    }
-}
-
-extension Dictionary where Value: Equatable {
-    func someKey(forValue val: Value) -> Key? {
-        return first(where: { $1 == val })?.key
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return sourceLanguages[row].langs
     }
 }
