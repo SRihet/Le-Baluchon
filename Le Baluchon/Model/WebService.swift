@@ -7,10 +7,12 @@
 
 import Foundation
 
+// List of HTTP method
 enum HTTPMethod: String {
     case post = "POST", get = "GET"
 }
 
+// List of APIs (webservice)
 enum WebService {
     case currency, translate, weather
 }

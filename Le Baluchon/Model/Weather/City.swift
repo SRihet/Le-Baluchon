@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: Struct model for match with cities JSON file
 struct City: Decodable {
     let id: Int
     let name: String
@@ -14,6 +15,8 @@ struct City: Decodable {
 }
 
 extension City {
+
+     // Decodes a response from the JSON file and return the requested resource
     static func cities() -> [City] {
         guard
           let url = Bundle.main.url(forResource: "cities", withExtension: "json"),
@@ -30,10 +33,3 @@ extension City {
         }
       }
     }
-
-
-struct MyCities {
-    static var myCity = "Nantes"
-    static var myTravelCity = "New York"
-
-}

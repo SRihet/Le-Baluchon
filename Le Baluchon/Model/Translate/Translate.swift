@@ -7,13 +7,10 @@
 
 import Foundation
 
-//struct Translate: Codable {
-//    var text: String
-////    var detectedLanguage: String
-//}
+// MARK: Struct model for match Google Translate JSON response
 
 struct TranslateModel: Codable {
-    let data: DataClass!
+    let data: DataClass
 }
 struct DataClass: Codable {
     let translations: [Translation]

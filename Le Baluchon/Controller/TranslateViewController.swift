@@ -7,24 +7,24 @@
 
 import UIKit
 
-class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class TranslateViewController: UIViewController, UITextViewDelegate {
     
-    
+    // MARK: - IBOutlet
     @IBOutlet weak var userText: UITextView!
     @IBOutlet weak var translatedText: UITextView!
-    var desiredLanguageRow: Int = 1
-    var motherLanguageRow: Int = 0
-    
     @IBOutlet weak var motherLanguageButton: UIButton!
-    
     @IBOutlet weak var desiredLanguageButton: UIButton!
+    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
     let screenWidth = UIScreen.main.bounds.width - 10
     let screenHeight = UIScreen.main.bounds.height / 4
-    var selectedRowMotherLang = 0
-    var selectedRowdesiredLang = 1
-    
+    var selectedRowMotherLang = MyLanguages.myLanguages
+    var selectedRowdesiredLang = MyLanguages.myTravelLanguages
     var textViewTimer: Timer?
-
+    var placeHolderText = "Saisir votre texte"
+    
+    // MARK: - PickerView elements
     var sourceLanguages: [(langs:String,sources:String)] =
     [
         ("Anglais","en"),
@@ -51,103 +51,54 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
         ("Allemand","de")
     ]
     
-    
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         userText.delegate = self
-        self.desiredLanguageButton.setTitle(sourceLanguages[selectedRowdesiredLang].langs, for: .normal)
-        self.motherLanguageButton.setTitle(sourceLanguages[selectedRowMotherLang].langs, for: .normal)
-        
-        userText.text = "Placeholder text goes right here..."
+        userText.text = placeHolderText
         userText.textColor = UIColor.lightGray
-
+        userText.layer.cornerRadius = 10
+        translatedText.layer.cornerRadius = 10
+        desiredLanguageButton.setTitle(sourceLanguages[selectedRowdesiredLang].langs, for: .normal)
+        desiredLanguageButton.layer.cornerRadius = 5
+        motherLanguageButton.setTitle(sourceLanguages[selectedRowMotherLang].langs, for: .normal)
+        motherLanguageButton.layer.cornerRadius = 5
+        activityIndicator.isHidden = true
+        
     }
     
-    
-    @IBAction func popUpPickerView(_ sender: UIButton) {
-        let vc = UIViewController()
-        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
-        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: screenWidth, height:screenHeight))
-        pickerView.dataSource = self
-        pickerView.delegate = self
-        
-        switch sender.tag {
-        case 1:
-            pickerView.selectRow(selectedRowMotherLang, inComponent: 0, animated: true)
-        case 2:
-            pickerView.selectRow(selectedRowdesiredLang, inComponent: 0, animated: true)
-            
-        default:
-            break
-        }
-        
-        
-        
-        vc.view.addSubview(pickerView)
-        pickerView.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
-        pickerView.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
-        
-        let alert = UIAlertController(title: "Select your Language", message: "", preferredStyle: .actionSheet)
-        
-        if sender.tag == 1 {
-            alert.popoverPresentationController?.sourceView = motherLanguageButton
-            alert.popoverPresentationController?.sourceRect = motherLanguageButton.bounds
-            
-            alert.setValue(vc, forKey: "contentViewController")
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (UIAlertAction) in
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Select", style: .default, handler: { (UIAlertAction) in
-                self.selectedRowMotherLang = pickerView.selectedRow(inComponent: 0)
-                let selected = Array(self.sourceLanguages)[self.selectedRowMotherLang].langs
-                self.motherLanguageButton.setTitle(selected, for: .normal)
-                self.typingStopped()
-            }))
-        }
-        
-        if sender.tag == 2 {
-            alert.popoverPresentationController?.sourceView = desiredLanguageButton
-            alert.popoverPresentationController?.sourceRect = desiredLanguageButton.bounds
-            
-            alert.setValue(vc, forKey: "contentViewController")
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (UIAlertAction) in
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Select", style: .default, handler: { (UIAlertAction) in
-                self.selectedRowdesiredLang = pickerView.selectedRow(inComponent: 0)
-                let selected = Array(self.sourceLanguages)[self.selectedRowdesiredLang].langs
-                self.desiredLanguageButton.setTitle(selected, for: .normal)
-                self.typingStopped()
-            }))
-        }
-        
-        
-        
-        self.present(alert, animated: true, completion: nil)
+    // MARK: - IBAction
+    @IBAction func ChangeLanguage(_ sender: UIButton) {
+        ShowPickerView(senderTag: sender.tag)
     }
     
     @IBAction func reverseLanguage(_ sender: Any) {
         let desiredLang = selectedRowMotherLang
         let motherLang = selectedRowdesiredLang
-        
-        
+
         self.desiredLanguageButton.setTitle(sourceLanguages[desiredLang].langs, for: .normal)
         self.motherLanguageButton.setTitle(sourceLanguages[motherLang].langs, for: .normal)
-        
+
         self.selectedRowdesiredLang = desiredLang
         self.selectedRowMotherLang = motherLang
-        
+
         self.userText.text = translatedText.text
         self.translatedText.text = ""
-        
+
         self.typingStopped()
         
     }
     
+    @IBAction func onClearPressed(_ sender: Any) {
+        userText.text = placeHolderText
+        userText.textColor = UIColor.lightGray
+        translatedText.text  = ""
+        clearButton.isEnabled = false
+    }
     
-    
+    // MARK: - TextView
     func textViewDidChange(_ textView: UITextView) {
-        
+        clearButton.isEnabled = !textView.text.isEmpty
         textViewTimer?.invalidate()
         textViewTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(typingStopped), userInfo: nil, repeats: false)
     }
@@ -156,18 +107,31 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
         
         if userText.textColor == UIColor.lightGray {
             userText.text = ""
-            userText.textColor = UIColor.black
+            clearButton.isEnabled = true
+            userText.textColor = UIColor.white
         }
     }
     
-    
     @objc func typingStopped() {
+        if userText.text == "" || userText.text == placeHolderText {
+            translatedText.text = ""
+        }else {
+            getTranslate()
+        }
+    }
+    
+    // MARK: - Request API
+    private func getTranslate() {
+        
+        activityIndicator.isHidden = false
         
         NetWorker.shared.query(API: .translate, input: createParameters()) { (success, translate) in
-            if success, let translate = translate as? String {
-                self.update(translate: translate)
+            if success, let translate = translate as? TranslateModel? {
+                self.activityIndicator.isHidden = true
+                self.update(translate: (translate?.data.translations[1].translatedText)!)
             } else {
-                self.presentAlert()
+                self.activityIndicator.isHidden = true
+                self.presentAlert(alert: LeBaluchonAlertVC.translateErrorNetwork)
             }
         }
     }
@@ -182,14 +146,59 @@ class TranslateViewController: UIViewController, UITextViewDelegate, UIPickerVie
         
         return completeParameters
     }
+    
+    // MARK: - setUp UI with response
     private func update(translate: String) {
         translatedText.text = translate
     }
+}
+
+extension TranslateViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
-    private func presentAlert() {
-        let alertVC = UIAlertController(title: "Error", message: "The translation failed.", preferredStyle: .alert)
-        alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        present(alertVC, animated: true, completion: nil)
+    // MARK: - PickerView Components
+    func ShowPickerView(senderTag: Int) {
+        let vc = UIViewController()
+        vc.preferredContentSize = CGSize(width: screenWidth, height: screenHeight)
+        let pickerView = UIPickerView(frame: CGRect(x: 0, y: 0, width: screenWidth, height:screenHeight))
+        vc.view.addSubview(pickerView)
+        pickerView.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor).isActive = true
+        pickerView.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor).isActive = true
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        
+        let pickerAlert = UIAlertController(title: "Choisissez une langue", message: "", preferredStyle: .actionSheet)
+        
+        switch senderTag {
+        case 1:
+            pickerView.selectRow(selectedRowMotherLang, inComponent: 0, animated: true)
+            pickerAlert.popoverPresentationController?.sourceView = motherLanguageButton
+            pickerAlert.popoverPresentationController?.sourceRect = motherLanguageButton.bounds
+            
+            pickerAlert.addAction(UIAlertAction(title: "Sélectionner", style: .default, handler: { (UIAlertAction) in
+                self.selectedRowMotherLang = pickerView.selectedRow(inComponent: 0)
+                let selected = Array(self.sourceLanguages)[self.selectedRowMotherLang].langs
+                self.motherLanguageButton.setTitle(selected, for: .normal)
+                self.typingStopped()
+            }))
+        case 2:
+            pickerView.selectRow(selectedRowdesiredLang, inComponent: 0, animated: true)
+            pickerAlert.popoverPresentationController?.sourceView = desiredLanguageButton
+            pickerAlert.popoverPresentationController?.sourceRect = desiredLanguageButton.bounds
+            
+            pickerAlert.addAction(UIAlertAction(title: "Sélectionner", style: .default, handler: { (UIAlertAction) in
+                self.selectedRowdesiredLang = pickerView.selectedRow(inComponent: 0)
+                let selected = Array(self.sourceLanguages)[self.selectedRowdesiredLang].langs
+                self.desiredLanguageButton.setTitle(selected, for: .normal)
+                self.typingStopped()
+            }))
+            
+        default:
+            break
+        }
+        pickerAlert.setValue(vc, forKey: "contentViewController")
+        pickerAlert.addAction(UIAlertAction(title: "Annuler", style: .default, handler: { (UIAlertAction) in
+        }))
+        self.present(pickerAlert, animated: true, completion: nil)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int

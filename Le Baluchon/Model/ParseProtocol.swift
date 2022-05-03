@@ -7,13 +7,11 @@
 
 import Foundation
 
-/// Parse data using a `JSONDecoder`
+    // MARK: Parse Data with JSONDecoder
+
 protocol ParseProtocol {
     /**
-     Decode an API response and return the requested resource
-
-     - Attention: Webservices _must_ implemement this protocol
-
+     Protocol for decode an API response and return the requested resource
      - Parameters:
         - data: data to decode
         - decoder: JSON decoder

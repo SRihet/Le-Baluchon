@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: Struct model for match Fixer JSON response
 
 struct CurrencyModel: Codable {
     let success: Bool

@@ -7,12 +7,12 @@
 
 import Foundation
 
-/// Perform API requests
+// Performs API requests
 class NetWorker {
-    /// A closure to provide the state of a network call to the ViewControllers
+    // A closure to provide the status of a network call to ViewControllers
     typealias Callback = (Bool, Any?) -> Void
+    
     var request: URLRequest?
-    /// Decoded data from an API
     var resource: Any?
 
     static var shared = NetWorker()
@@ -23,10 +23,10 @@ class NetWorker {
 
     private var session = URLSession(configuration: .default)
     
-    // for testing purpose
-//    init(session: URLSession) {
-//        self.session = session
-//    }
+    // for testing
+    init(session: URLSession) {
+        self.session = session
+    }
 }
 
 extension NetWorker {
@@ -34,17 +34,12 @@ extension NetWorker {
      Perform a session dataTask with URLRequest to different APIs
 
      - Parameters:
-        - API: APIs used by Le Baluchon
-        - input: Any value input by the user and used by the API to provide the expected resource
-        - callback: Provides the state of the session and returns decoded data to the VCs
-
-     - Note:
-     As of november 2018, any API involved in Le Baluchon takes a String as an input type.
-     To allow flexibility when calling `query` and avoid passing dummy value to the `input` parameter,
-     `input` default value is an empty string.
+        - API: APIs type
+        - input: Value input by the user and used by the API (parameters)
+        - callback: Provides the status of the session and returns decoded data to the ViewControllers
      */
     func query(API: WebService, input: String = "", callback: @escaping Callback) {
-        if API != .currency { task?.cancel() }
+        task?.cancel()
 
         guard let request = getRequest(API: API, for: input) else {
             callback(false, nil)
@@ -66,10 +61,7 @@ extension NetWorker {
                 let decoder = JSONDecoder()
                 switch API {
                 case .currency:
-                    if CurrencyService.parse(data, with: decoder) as? Int == -1
-                        ||
-                        CurrencyService.parse(data, with: decoder) as? Int == -2
-                    {
+                    if CurrencyService.parse(data, with: decoder) as? Int == -1 {
                         callback(false, nil)
                         return
                     }
@@ -99,16 +91,10 @@ extension NetWorker {
 
 extension NetWorker {
     /**
-     Call `createRequest` for each API
-
+     Calls `createRequest` for the different APIs
      - Parameters:
-        - API: APIs used by Le Baluchon
-        - input: Any value input by the user and used by the API to provide the expected resource
-
-     - Note:
-     As of november 2018, any API involved in Le Baluchon takes a String as an input type.
-     To allow flexibility when calling `query` and avoid passing dummy values to the `input` parameter,
-     `input` default value is an empty string.
+        - API: APIs type
+        - input: Value input by the user and used by the API (parameters)
      */
     private func getRequest(API: WebService, for input: String = "") -> URLRequest? {
         switch API {

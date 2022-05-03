@@ -9,6 +9,8 @@ import Foundation
 
 class WeatherService {
     
+    // MARK: Build a URL to access OpenWeatherMap API
+    
     static func createRequest(for parameters: String) -> URLRequest {
         let encodedParameters = parameters.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
 
@@ -24,6 +26,9 @@ class WeatherService {
 }
 
 extension WeatherService: ParseProtocol {
+    
+    // MARK: Parse JSON response
+    
     static func parse(_ data: Data, with decoder: JSONDecoder) -> Any {
         guard let json = try? decoder.decode(WeatherModel.self, from: data) else {
             return (-1)

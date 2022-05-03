@@ -35,7 +35,7 @@ class CityViewController: UIViewController {
         tableView.separatorInset = UIEdgeInsets.zero
         tableView.layer.cornerRadius = 5.0
         tableView.separatorColor = UIColor.lightGray
-        tableView.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+
         
         searchBar.delegate = self
         searchBar.addTarget(self, action: #selector(searchRecords(_ :)), for: .editingChanged)
@@ -59,6 +59,9 @@ class CityViewController: UIViewController {
         tableView.reloadData()
     }
     
+    @IBAction func cancelCitySearch(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
     
     private func searchCity(_ textField: String) {
         if textField.count != 0 {

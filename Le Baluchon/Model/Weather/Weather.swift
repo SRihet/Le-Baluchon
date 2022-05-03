@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: Struct model for match OpenWeatherMap JSON response
 
 struct WeatherModel: Codable {
     let weather: [WeatherElement]
