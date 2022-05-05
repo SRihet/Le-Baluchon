@@ -134,4 +134,36 @@ class WeatherTestCase: XCTestCase {
         }
         wait(for: [expectation], timeout: 1)
     }
+    
+    func testCountOfCitiesInJsonFile() {
+
+        var citiesList: [City]
+        citiesList = City.cities()
+        
+        XCTAssertEqual(132873, citiesList.count)
+    }
+    
+    func testCitiesJsonFileContains() {
+        let trueCity = City(id: 2990969, name: "Nantes", country: "FR")
+        let falseCity = City(id: 6, name: "FakeCity", country: "99")
+        var citiesList: [City]
+        citiesList = City.cities()
+        var result: Bool
+        
+        if (citiesList.firstIndex(where: {$0.name == trueCity.name}) != nil) {
+            result = true
+        }else {
+            result = false
+        }
+        
+        XCTAssertTrue(result)
+        
+        if (citiesList.firstIndex(where: {$0.name == falseCity.name}) != nil) {
+            result = true
+        }else {
+            result = false
+        }
+        
+        XCTAssertFalse(result)
+    }
 }
