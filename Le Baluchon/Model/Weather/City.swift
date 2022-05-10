@@ -17,9 +17,9 @@ struct City: Decodable {
 extension City {
 
      // Decodes a response from the JSON file and return the requested resource
-    static func cities() -> [City] {
+    static func cities(fileName: String = "cities") -> [City] {
         guard
-          let url = Bundle.main.url(forResource: "cities", withExtension: "json"),
+          let url = Bundle.main.url(forResource: fileName, withExtension: "json"),
           let data = try? Data(contentsOf: url)
           else {
             return []

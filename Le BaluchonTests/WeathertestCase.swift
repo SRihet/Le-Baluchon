@@ -166,4 +166,20 @@ class WeatherTestCase: XCTestCase {
         
         XCTAssertFalse(result)
     }
+    
+    func testCityWithJsonFileNotDecodable() {
+
+        var citiesList: [City]
+        citiesList = City.cities(fileName: "City")
+        
+        XCTAssert(citiesList.isEmpty)
+    }
+    
+    func testCityWithoutJsonFile() {
+
+        var citiesList: [City]
+        citiesList = City.cities(fileName: "NoFile")
+        
+        XCTAssert(citiesList.isEmpty)
+    }
 }

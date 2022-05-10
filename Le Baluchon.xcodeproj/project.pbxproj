@@ -41,6 +41,7 @@
 		CB915E1127AD69420031AAD4 /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB915E1027AD69420031AAD4 /* CurrencyViewController.swift */; };
 		CB9CE780282194C700990DD0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9CE77F282194C700990DD0 /* Settings.swift */; };
 		CB9CE781282194C700990DD0 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9CE77F282194C700990DD0 /* Settings.swift */; };
+		CBBF88BF2825400D00AB7DB7 /* City.json in Resources */ = {isa = PBXBuildFile; fileRef = CBBF88BE2825400D00AB7DB7 /* City.json */; };
 		CBE7992927F1F295007A18D3 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE7992827F1F295007A18D3 /* Currency.swift */; };
 		CBE7992B27F1F2A4007A18D3 /* CurrencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE7992A27F1F2A4007A18D3 /* CurrencyService.swift */; };
 		CBF754A2280AB4EE0081700C /* Extension-UiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF754A1280AB4EE0081700C /* Extension-UiViewController.swift */; };
@@ -92,6 +93,7 @@
 		CB915E1027AD69420031AAD4 /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
 		CB9CE77C2821826F00990DD0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB9CE77F282194C700990DD0 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		CBBF88BE2825400D00AB7DB7 /* City.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = City.json; sourceTree = "<group>"; };
 		CBE7992827F1F295007A18D3 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		CBE7992A27F1F2A4007A18D3 /* CurrencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyService.swift; sourceTree = "<group>"; };
 		CBF754A1280AB4EE0081700C /* Extension-UiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension-UiViewController.swift"; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 		CB63666727FCBE0900044E5D /* Json */ = {
 			isa = PBXGroup;
 			children = (
+				CBBF88BE2825400D00AB7DB7 /* City.json */,
 				CB63666827FCBE4700044E5D /* Translation.json */,
 				CB63666A27FCBE5100044E5D /* Weather.json */,
 				CB63666C27FCBE5800044E5D /* Currency.json */,
@@ -338,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB915DE727AA95BC0031AAD4 /* LaunchScreen.storyboard in Resources */,
+				CBBF88BF2825400D00AB7DB7 /* City.json in Resources */,
 				CB43E90C27DD1E26007C0C0D /* cities.json in Resources */,
 				CB915DE427AA95BC0031AAD4 /* Assets.xcassets in Resources */,
 				CB915DE227AA95BB0031AAD4 /* Main.storyboard in Resources */,
